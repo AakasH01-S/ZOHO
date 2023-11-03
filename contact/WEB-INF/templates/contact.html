@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Contact App</title>
+    <style>
+        body {
+            text-align: center;
+	        background: linear-gradient(-45deg, #ed8464, #e278a0, #6ebfdc, #87edd5);
+	        background-size: 400% 400%;
+	        animation: gradient 7s ease infinite;
+	        height: 100vh;
+            font-size: larger;
+        }
+
+        @keyframes gradient {
+	    0% {
+		background-position: 0% 50%;
+	    }
+	    50% {
+		background-position: 100% 50%;
+	    }
+	    100% {
+		background-position: 0% 50%;
+	    }
+        }
+        table {
+            margin: 0 auto;
+            width: 80%;
+            border-collapse: collapse; 
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+        }
+        /* tr:nth-child(even) {
+            background-color: #f2f2f2; 
+        }
+        tr:nth-child(odd) {
+            background-color: #dddddd; 
+        } */
+        .button {
+            display: flex;
+            justify-content: center;
+        }
+        .button button {
+            margin-right: 10px;  
+            border: none;
+            padding: 5px 10px;
+            border-radius: 7px;
+        }
+        table, tbody, tr, th, td{
+        background-color: rgba(0, 0, 0, 0.0) !important;
+        }
+        table input{
+            background: transparent;
+            border: 0;
+        }
+        .add input{
+            padding: 11px;
+            border-radius:15px;
+            background: transparent;
+            border: 1px solid black;
+        }
+        .add{
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+    </style>
+</head>
+<body >
+    <div>
+        <h1>Contact Application</h1>
+    </div>
+    <div >
+        <form action="/contact/addcontact" method="post" class="add">
+            <input type="text" name="name" placeholder="Enter your Name" required>
+            <input type="text" name="number" placeholder="Enter your Number" required>
+            <input type="email" name="mail" placeholder="Enter your mail ID">
+            <input type="submit" value="Add Contact" style="background-color:rgb(98, 192, 255);">
+        </form>
+    </div>
+    <br><br>
+    <div>
+        <table th:if="${empty!=1}" >
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Number</th>
+                <th>Mail</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="contact, i : ${contacts}">
+                <td th:text="${i.index + 1}"></td>
+                <form action="/contact/edit" method="post">
+                    <td><input type="text" th:value="${contact.name}" name="name"></td>
+                    <td><input type="text" th:value="${contact.number}" name="number"></td>
+                    <td><input type="email" th:value="${contact.mail}" name="mail"></td>
+                    <td>
+                        <div class="button">
+                            <button th:value="${i.index}" name="index" style="background-color: green;">Edit</button> 
+                </form>
+                <form action="/contact/remove" method="post">
+                    <button th:value="${i.index}" name="index" style="background-color: red;"> Remove</button>
+                </form>
+                        </div>
+                    </td>
+                </tr>
+        </table>
+    </div>
+</body>
+</html>  
+
+
+
+
+
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Contact App</title>
+    <link rel="stylesheet" href="/contact/src/style.css">
+    
+</head>
+<body>
+    <div id="maindiv">
+        <div id="header">
+            <h1>Phone Book</h1>
+        </div>
+        <br>
+        <div>
+            <form action="search" class="search" method="post">
+                <input type="text" placeholder="search Name" name="search">
+                <input type="submit" value="search" style="background-color: #8ddbf7;">
+            </form>
+        </div>
+        <br>
+        <div class="content-height">
+            <div class="content">
+                <span th:if="${empty==0}" class="empty">NO CONTACTS TO DISPLAY....ADD CONTACTS</span>
+                <table th:if="${empty != 0}">
+                    <tr>
+                        <th>Name</th>
+                        <th>Number</th>
+                        <th>Mail</th>
+                        <th>Action</th>
+                    </tr>
+                    <tr th:each="cont,i: ${contacts}">
+                        <form action="/contact/edit" id="myForm" method="post">
+                            <td>
+                                <input  type="text" th:value="${cont.value.name}" name="name" >
+                            </td>
+                            <td>
+                                <input type="text" th:value="${cont.value.number}" name="number"  pattern="[0-9]{10}" title="Please enter exactly 10 digits">
+                            </td>
+                            <td>
+                                <input  type="email" th:value="${cont.value.mail}" name="mail" >
+                            </td>
+                            <td>
+                                <div class="button">
+                                    <button id="subBtn" th:value="${cont.key}" name="index"> <img src="/contact/img/edit.svg" ></button>
+                        </form>
+                        <form action="/contact" id= "home"></form>
+                                    <form action="/contact/remove" method="post">
+                                        <button th:value="${cont.key}" name="index" onclick="return confirm('Are you sure to Delete that contact')"> <img src="/contact/img/delete.svg" alt="Delete"></button>
+                                    </form>
+                                </div>
+                            </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div id="add-div">
+        <span th:if="${exist==true}"> This contact already exist</span>
+        <form action="/contact/addcontact" method="post" class="add">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" placeholder="Enter your Name" required>
+            </div>
+            <div>
+                <label for="number">Phone Number:</label>
+                <input type="text" name="number" placeholder="Enter your Number" required pattern="[0-9]{10}" title="Please enter exactly 10 digits">
+            </div>
+            <div>
+                <label for="name">E-mail:</label>
+                <input type="email" name="mail" placeholder="Enter your mail ID">
+            </div>
+            <input type="submit" value="Add Contact" style="background-color:rgb(98, 192, 255);">
+        </form>
+    </div>
+    </div>
+
+</body>
+<script>
+var subBtn = document.querySelectorAll('#subBtn');
+for(let i = 0;i<subBtn.length;i++){
+    subBtn[i].addEventListener('click',function (e){
+    if(confirm('Are sure you to edit the changes ?'))
+    {
+        document.getElementById('myForm').submit();
+    }
+    else
+    {
+        e.preventDefault();
+        window.location = 'http://localhost:8080/contact';
+    }
+})
+};
+</script>
+</html>
